@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import CustomModal from "./CustomModal";
-import Cookies from "js-cookie";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog, faTimes } from '@fortawesome/free-solid-svg-icons';
 
@@ -22,10 +21,9 @@ const TodoList: React.FC = () => {
   const [newTodoDescription, setNewTodoDescription] = useState("");
   const [primaryColor, setPrimaryColor] = useState<string>("#0070f3");
 
-  // Load todos and primary color from cookies on initial render
   useEffect(() => {
-    const savedTodos = Cookies.get("todos");
-    const savedColor = Cookies.get("primaryColor");
+    const savedTodos = localStorage.getItem("todos");
+    const savedColor = localStorage.getItem("primaryColor");
 
     if (savedTodos) {
       setTodos(JSON.parse(savedTodos));
@@ -36,14 +34,12 @@ const TodoList: React.FC = () => {
     }
   }, []);
 
-  // Save todos to cookies whenever they change
   useEffect(() => {
-    Cookies.set("todos", JSON.stringify(todos), { expires: 7 });
+    localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
 
-  // Save primary color to cookies whenever it changes
   useEffect(() => {
-    Cookies.set("primaryColor", primaryColor, { expires: 7 });
+    localStorage.setItem("primaryColor", primaryColor);
   }, [primaryColor]);
 
   const addTodo = () => {
